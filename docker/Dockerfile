@@ -66,21 +66,22 @@ RUN apt-get update && apt-get install git
 
 RUN apt-get install --no-install-recommends -y --allow-unauthenticated mongodb ros-melodic-mongodb-store
 
-RUN git clone https://rgit.acin.tuwien.ac.at/christianxeder/edith_visualization.git ~/catkin_ws/src/
+RUN git clone   https://gitlab+deploy-token-52:5s2pbPHLsA1ji89pwoKD@rgit.acin.tuwien.ac.at/markus_projects/edith_visualization.git ~/catkin_ws/src/
 RUN rm ~/catkin_ws/src/README.md
-RUN git clone https://rgit.acin.tuwien.ac.at/hsr-tidyup-pipeline/obj_det_ppf_matching_msgs.git ~/catkin_ws/src/obj_det_ppf_matching_msgs
-RUN git clone https://rgit.acin.tuwien.ac.at/edith-langer/table_extractor.git ~/catkin_ws/src/table_extractor
+RUN git clone https://gitlab+deploy-token-50:cqZ5fHtQTWYXFtP2DRE-@rgit.acin.tuwien.ac.at/hsr-tidyup-pipeline/obj_det_ppf_matching_msgs.git ~/catkin_ws/src/obj_det_ppf_matching_msgs
+RUN git clone https://markus-docker:R_3nRtD8NL1TET_p8tku@rgit.acin.tuwien.ac.at/leitnermrks/table_extractor.git  ~/catkin_ws/src/table_extractor
+RUN git clone https://gitlab+deploy-token-51:U2TwdynH5NrMTUVX1hUp@rgit.acin.tuwien.ac.at/markus_projects/edith_msgs.git ~/catkin_ws/src/edith_msgs
 
 # Run catkin build
 RUN /bin/bash -c  '. /opt/ros/melodic/setup.bash; cd ~/catkin_ws/; catkin build'
 
 # source the catkin workspace
-RUN echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
+#RUN echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 
-WORKDIR /root
+#WORKDIR /root
 
 # setup entrypoint
-COPY ./ros_entrypoint.sh /
-RUN chmod +x /ros_entrypoint.sh
-ENTRYPOINT ["/ros_entrypoint.sh"]
+#COPY ./ros_entrypoint.sh /
+#RUN chmod +x /ros_entrypoint.sh
+#ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
