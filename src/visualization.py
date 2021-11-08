@@ -8,7 +8,7 @@ import sched
 import open3d
 import numpy as np
 from lib_cloud_conversion_between_Open3D_and_ROS import convertCloudFromOpen3dToRos, convertCloudFromRosToOpen3d #https://github.com/felixchenfy/open3d_ros_pointcloud_conversion
-from obj_det_ppf_matching_msgs.msg import Object, CandidateObject, ObjectMatch, ObjectStateClass
+from edith_msgs.msg import Object, CandidateObject, ObjectMatch, ObjectStateClass
 from mongodb_store.message_store import MessageStoreProxy
 
 class VisualizationService(object):
