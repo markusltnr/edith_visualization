@@ -88,7 +88,7 @@ class VisualizationService(object):
 
             permanent_objects = None
             for obj in object_list:
-                cloud = orh.rospc_to_o3dpc(obj.obj_cloud)
+                cloud = orh.rospc_to_o3dpc(obj.obj_cloud_no_normals)
 
                 self.color_pcl(cloud, (255, 0, 0))
                 if permanent_objects is None:
@@ -103,7 +103,7 @@ class VisualizationService(object):
             for candidateObject in candidateObject_list:
                 #rospy.loginfo(candidateObject.state)
                 #self.pcl_segment = convertCloudFromRosToOpen3d(candidateObject.object.obj_cloud)
-                self.pcl_segment = orh.rospc_to_o3dpc(candidateObject.object.obj_cloud, remove_nans=True)
+                self.pcl_segment = orh.rospc_to_o3dpc(candidateObject.object.obj_cloud_no_normals, remove_nans=True)
                 if candidate_objects is None:
                     candidate_objects = np.asarray(self.pcl_segment.points)
                     candidate_objects_colors = np.asarray(self.pcl_segment.colors)
@@ -126,12 +126,12 @@ class VisualizationService(object):
                     start = Point()
                     for obj in object_list:
                         if obj.id == candidateObject.match.model_id:
-                            model = orh.rospc_to_o3dpc(obj.obj_cloud)
+                            model = orh.rospc_to_o3dpc(obj.obj_cloud_no_normals)
                             center_model = model.get_center()
                             start.x = center_model[0]
                             start.y = center_model[1]
                             start.z = center_model[2]
-                            self.color_pcl(orh.rospc_to_o3dpc(obj.obj_cloud), (255, 0, 255))
+                            self.color_pcl(orh.rospc_to_o3dpc(obj.obj_cloud_no_normals), (255, 0, 255))
                     #start.x = center[0]-candidateObject.match.transform.translation.x
                     #start.y = center[1]-candidateObject.match.transform.translation.y
                     #start.z = center[2]-candidateObject.match.transform.translation.z
@@ -182,8 +182,9 @@ class VisualizationService(object):
             pcd1.colors = o3d.utility.Vector3dVector(permanent_objects_colors)  
             perm = orh.o3dpc_to_rospc(pcd1, "map")
             pcd2 = o3d.geometry.PointCloud()
-            pcd2.points = o3d.utility.Vector3dVector(candidate_objects)
-            pcd2.colors = o3d.utility.Vector3dVector(candidate_objects_colors)   
+            if candidate_objects is not None:
+                pcd2.points = o3d.utility.Vector3dVector(candidate_objects)
+                pcd2.colors = o3d.utility.Vector3dVector(candidate_objects_colors)   
             cand = orh.o3dpc_to_rospc(pcd2, "map")
             self.seq += 1
             self.visualize_publisher.publish(self.p_pcl)
