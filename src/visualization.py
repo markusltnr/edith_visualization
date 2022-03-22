@@ -178,8 +178,9 @@ class VisualizationService(object):
                 self.pcl.colors.append(np.asarray((0, 0, 0), dtype=np.float64))
             self.p_pcl = orh.o3dpc_to_rospc(self.pcl, "map")
             pcd1 = o3d.geometry.PointCloud()
-            pcd1.points = o3d.utility.Vector3dVector(permanent_objects)
-            pcd1.colors = o3d.utility.Vector3dVector(permanent_objects_colors)  
+            if candidate_objects is not None:
+                pcd1.points = o3d.utility.Vector3dVector(permanent_objects)
+                pcd1.colors = o3d.utility.Vector3dVector(permanent_objects_colors)  
             perm = orh.o3dpc_to_rospc(pcd1, "map")
             pcd2 = o3d.geometry.PointCloud()
             if candidate_objects is not None:
